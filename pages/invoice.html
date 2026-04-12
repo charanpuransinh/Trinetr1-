@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .invoice-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+        .invoice-header {
+            text-align: center;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .invoice-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .invoice-table th, .invoice-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .invoice-table th {
+            background: #2c3e50;
+            color: white;
+        }
+        .total-row {
+            text-align: right;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        @media print {
+            .no-print { display: none; }
+            .invoice-box { margin: 0; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="no-print">
+        <a href="home.html">🏠 Home</a>
+        <a href="parties.html">👥 Parties</a>
+        <a href="items.html">📦 Items</a>
+        <a href="accounts.html">💰 Accounts</a>
+        <a href="invoice.html">🧾 Invoice</a>
+    </nav>
+    <div class="container">
+        <div class="card no-print">
+            <h2>🧾 Create New Invoice</h2>
+            <div class="form-row">
+                <select id="invoiceParty" onchange="selectParty()">
+                    <option value="">Select Party</option>
+                </select>
+                <input type="date" id="invoiceDate" value="2026-04-13">
+                <input type="text" id="invoiceNo" placeholder="Invoice No (Auto)">
+            </div>
+            
+            <h3>Add Items</h3>
+            <div class="form-row">
+                <select id="itemSelect">
+                    <option value="">Select Item</option>
+                </select>
+                <input type="number" id="itemQty" placeholder="Quantity" value="1">
+                <button onclick="addToCart()">Add Item</button>
+            </div>
+            
+            <h3>Cart</h3>
+            <div id="cartList"></div>
+            
+            <div class="form-row">
+                <input type="number" id="discount" placeholder="Discount (₹)" value="0">
+                <input type="number" id="transport" placeholder="Transport (₹)" value="0">
+                <button onclick="generateInvoice()">Generate Invoice</button>
+                <button onclick="printInvoice()">🖨️ Print Invoice</button>
+            </div>
+        </div>
+        
+        <div id="invoicePreview" class="invoice-box" style="display:none;"></div>
+    </div>
+    <script src="../js/script.js"></script>
+    <script>
+        let cart = [];
+        
+        function loadPartiesToInvoice() {
+            let parties = getParties();
+            let select = document.getElementById('invoiceParty');
+            select.innerHTML = '<option value="">Select Party</option>';
+            parties.forEach(p => {
+                select.innerHTML += `<option value="${p.id}" data-state="${p.stateCode}" data-name="${p.name}">${p.name} (${p.stateCode})</option>`;
+            });
+        }
+        
+        function loadItemsToInvoice() {
+            let items = getItems();
+            let select = document.getElementById('itemSelect');
+            select.innerHTML = '<option value="">Select Item</option>';
+            items.forEach(i => {
+                select.innerHTML += `<option value="${i.id}" data-rate="${i.saleRate}" data-gst="${i.gst}" data-name="${i.name}">${i.name} - ₹${i.saleRate} (${i.gst}% GST)</option>`;
+            });
+        }
+        
+        function addToCart() {
+            let select = document.getElementById('itemSelect');
+            let itemId = select.value;
+            let qty = parseInt(document.getElementById('itemQty').value);
+            if(!itemId || !qty) return alert('Select item and quantity');
+            
+            let item = getItems().find(i => i.id === itemId);
+            cart.push({
+                id: item.id,
+                name: item.name,
+                hsn: item.hsn,
+                qty: qty,
+                rate: item.saleRate,
+                gst: item.gst
+            });
+            renderCart();
+            document.getElementById('itemQty').value = 1;
+        }
+        
+        function renderCart() {
+            let html = '<table class="invoice-table"><tr><th>Item</th><th>Qty</th><th>Rate</th><th>Taxable</th><th>GST%</th><th>Amount</th><th>Action</th></tr>';
+            cart.forEach((item, index) => {
+                let taxable = item.qty * item.rate;
+                let gstAmt = taxable * item.gst / 100;
+                let total = taxable + gstAmt;
+                html += `<tr>
+                    <td>${item.name}</td>
+                    <td>${item.qty}</td>
+                    <td>₹${item.rate}</td>
+                    <td>₹${taxable}</td>
+                    <td>${item.gst}%</td>
+                    <td>₹${total}</td>
+                    <td><button onclick="removeFromCart(${index})">Remove</button></td>
+                </tr>`;
+            });
+            html += '</table>';
+            document.getElementById('cartList').innerHTML = html;
+        }
+        
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            renderCart();
+        }
+        
+        function generateInvoice() {
+            let partySelect = document.getElementById('invoiceParty');
+            let partyId = partySelect.value;
+            if(!partyId || cart.length === 0) return alert('Select party and add items');
+            
+            let party = getParties().find(p => p.id === partyId);
+            let date = document.getElementById('invoiceDate').value;
+            let discount = parseFloat(document.getElementById('discount').value) || 0;
+            let transport = parseFloat(document.getElementById('transport').value) || 0;
+            
+            let subtotal = 0, totalGST = 0;
+            cart.forEach(item => {
+                let taxable = item.qty * item.rate;
+                subtotal += taxable;
+                totalGST += taxable * item.gst / 100;
+            });
+            
+            let grandTotal = subtotal + totalGST + transport - discount;
+            
+            let html = `
+                <div class="invoice-header">
+                    <h2>TAX INVOICE</h2>
+                    <p>Invoice No: INV-${Date.now()} | Date: ${date}</p>
+                </div>
+                <div>
+                    <strong>Party:</strong> ${party.name}<br>
+                    <strong>GST:</strong> ${party.gst} | State Code: ${party.stateCode}<br>
+                    <strong>Address:</strong> ${party.address || 'Not specified'}
+                </div>
+                <table class="invoice-table">
+                    <tr><th>#</th><th>Item</th><th>HSN</th><th>Qty</th><th>Rate</th><th>Taxable</th><th>GST%</th><th>Amount</th></tr>
+            `;
+            cart.forEach((item, i) => {
+                let taxable = item.qty * item.rate;
+                let gstAmt = taxable * item.gst / 100;
+                let total = taxable + gstAmt;
+                html += `<tr>
+                    <td>${i+1}</td>
+                    <td>${item.name}</td>
+                    <td>${item.hsn}</td>
+                    <td>${item.qty}</td>
+                    <td>₹${item.rate}</td>
+                    <td>₹${taxable}</td>
+                    <td>${item.gst}%</td>
+                    <td>₹${total}</td>
+                </tr>`;
+            });
+            html += `
+                </table>
+                <div class="total-row">
+                    Subtotal: ₹${subtotal}<br>
+                    GST: ₹${totalGST}<br>
+                    Transport: ₹${transport}<br>
+                    Discount: ₹${discount}<br>
+                    <strong>Grand Total: ₹${grandTotal}</strong>
+                </div>
+                <div>
+                    <strong>Total in Words:</strong> ${numberToWords(grandTotal)}<br>
+                    <strong>Terms:</strong> Goods once sold cannot be returned.
+                </div>
+            `;
+            
+            document.getElementById('invoicePreview').innerHTML = html;
+            document.getElementById('invoicePreview').style.display = 'block';
+            
+            // Save to transactions
+            let transactions = getTransactions();
+            transactions.push({
+                id: Date.now(),
+                date: date,
+                party: party.name,
+                amount: grandTotal,
+                type: 'Sale',
+                gstType: 'Output',
+                gstAmount: totalGST
+            });
+            saveTransactions(transactions);
+            
+            // Update stock
+            cart.forEach(item => {
+                updateStock(item.id, item.qty, true);
+            });
+            
+            alert('Invoice Generated! Stock updated, GST recorded.');
+        }
+        
+        function numberToWords(num) {
+            if(num === 0) return 'Zero';
+            const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+            const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+            function convert(n) {
+                if(n < 10) return ones[n];
+                if(n < 20) return ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'][n-10];
+                return tens[Math.floor(n/10)] + (n%10 ? ' ' + ones[n%10] : '');
+            }
+            let rupees = Math.floor(num);
+            let paise = Math.round((num - rupees) * 100);
+            let result = convert(rupees) + ' Rupees';
+            if(paise > 0) result += ' and ' + convert(paise) + ' Paise';
+            return result + ' Only';
+        }
+        
+        function printInvoice() {
+            let printContents = document.getElementById('invoicePreview').innerHTML;
+            let originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload();
+        }
+        
+        window.onload = function() {
+            initData();
+            loadPartiesToInvoice();
+            loadItemsToInvoice();
+        };
+    </script>
+</body>
+  </html>

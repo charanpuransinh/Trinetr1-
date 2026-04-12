@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Items - Invoice System</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-page="items">
+    <nav>
+        <a href="home.html">🏠 Home</a>
+        <a href="parties.html">👥 Parties</a>
+        <a href="items.html">📦 Items</a>
+        <a href="accounts.html">💰 Accounts</a>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <h2>➕ Add New Item</h2>
+            <div class="form-row">
+                <input type="text" id="itemName" placeholder="Item Name">
+                <input type="number" id="itemRate" placeholder="Sale Rate (₹)">
+                <input type="number" id="itemGST" placeholder="GST %">
+                <button onclick="addItem()">Add Item</button>
+            </div>
+        </div>
+        <div class="card">
+            <h2>📦 Item List with Stock</h2>
+            <div id="itemList"></div>
+        </div>
+    </div>
+    <script src="../js/script.js"></script>
+</body>
+</html>

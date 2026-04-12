@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parties - Invoice System</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-page="parties">
+    <nav>
+        <a href="home.html">🏠 Home</a>
+        <a href="parties.html">👥 Parties</a>
+        <a href="items.html">📦 Items</a>
+        <a href="accounts.html">💰 Accounts</a>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <h2>➕ Add New Party</h2>
+            <div class="form-row">
+                <input type="text" id="partyName" placeholder="Party Name">
+                <input type="text" id="partyGST" placeholder="GST Number">
+                <input type="text" id="partyStateCode" placeholder="State Code (e.g., 27)">
+                <select id="partyType">
+                    <option value="customer">Customer</option>
+                    <option value="supplier">Supplier</option>
+                </select>
+                <button onclick="addParty()">Add Party</button>
+            </div>
+        </div>
+        <div class="card">
+            <h2>📋 Party List</h2>
+            <div id="partyList"></div>
+        </div>
+    </div>
+    <script src="../js/script.js"></script>
+</body>
+</html>

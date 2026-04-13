@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trinetra Billing - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="tiranga-header"></div>
+
+    <nav>
+        <a href="index.html" style="border-bottom: 2px solid #FFD700;">Dashboard</a>
+        <a href="items.html">Items</a>
+        <a href="parties.html">Parties</a>
+        <a href="accounts.html">Accounts</a>
+    </nav>
+
+    <div class="container">
+        <header style="text-align: center; margin-bottom: 20px;">
+            <h1 style="color: #FFD700;">TRINETRA BILLING</h1>
+            <p style="font-size: 0.8rem; color: #888;">Make In India Initiative</p>
+        </header>
+
+        <div class="stats">
+            <div class="stat-card">
+                <p>Today's Sale</p>
+                <h3 id="todaySale">₹ 0.00</h3>
+            </div>
+            <div class="stat-card">
+                <p>Pending Dues</p>
+                <h3 style="color: #ff4444;" id="pendingDues">₹ 0.00</h3>
+            </div>
+            <div class="stat-card">
+                <p>Total Items</p>
+                <h3 id="totalItemsCount">0</h3>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 20px;">
+            <h2 style="color: #FFD700; font-size: 1.2rem;">Quick Actions</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button onclick="window.location.href='billing.html'">+ New Invoice</button>
+                <button onclick="window.location.href='items.html'">+ Add Stock</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="color: #FFD700; font-size: 1.2rem;">Recent Invoices</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bill No.</th>
+                            <th>Party Name</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentInvoices">
+                        <tr>
+                            <td colspan="4" style="text-align:center; color:#555;">No recent transactions</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

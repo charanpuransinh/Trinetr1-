@@ -1,0 +1,139 @@
+/* Universal Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000000; /* Pure Black Background */
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+/* Tiranga Header Strip */
+.tiranga-header {
+    height: 6px;
+    background: linear-gradient(to right, #FF9933 33.33%, #ffffff 33.33%, #ffffff 66.66%, #138808 66.66%);
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Navbar Design */
+nav {
+    background: #111111;
+    border-bottom: 2px solid #FFD700; /* Gold Border */
+    padding: 1rem;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+nav a {
+    color: #FFD700;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    border: 1px solid #FFD700;
+    background: rgba(255, 215, 0, 0.1);
+}
+
+/* Containers & Cards */
+.container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 1rem auto;
+}
+
+.card {
+    background: #1a1a1a;
+    border: 1px solid #FFD700; /* Goldy Yellow Border */
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.05);
+}
+
+/* Form Inputs */
+input, select {
+    background: #222222;
+    border: 1px solid #444;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+input:focus {
+    border-color: #FFD700;
+    outline: none;
+}
+
+/* Table Design */
+.table-wrapper {
+    overflow-x: auto; /* For Mobile Zero Scroll */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th {
+    background: #FFD700;
+    color: #000000;
+    padding: 12px;
+    text-align: left;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+}
+
+/* Buttons */
+button {
+    background: #FFD700;
+    color: #000;
+    border: none;
+    padding: 12px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%; /* Mobile Friendly */
+}
+
+button.danger {
+    background: #ff4444;
+    color: white;
+}
+
+/* Stats Section */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.stat-card {
+    border: 1px solid #FFD700;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.stat-card h3 {
+    color: #FFD700;
+}

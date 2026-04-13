@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trinetra - Stock Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="items">
+    <div class="tiranga-header"></div>
+
+    <nav>
+        <a href="index.html">🏠 Home</a>
+        <a href="parties.html">👥 Parties</a>
+        <a href="items.html" style="border: 1px solid #FFD700; background: rgba(255, 215, 0, 0.2);">📦 Items</a>
+        <a href="accounts.html">💰 Accounts</a>
+        <a href="billing.html">📄 Invoice</a>
+    </nav>
+
+    <div class="container">
+        <header style="text-align: center; margin: 20px 0;">
+            <h1 style="color: #FFD700; letter-spacing: 1px;">STOCK MANAGEMENT</h1>
+        </header>
+
+        <div class="card">
+            <h2 style="color: #FFD700; font-size: 1.1rem; margin-bottom: 15px;">➕ Add New Item</h2>
+            <input type="text" id="itemName" placeholder="Item Name (नाम)">
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <input type="number" id="itemRate" placeholder="Rate (₹)" style="margin-bottom: 0;">
+                <input type="number" id="itemGST" placeholder="GST %" style="margin-bottom: 0;">
+            </div>
+            <button onclick="addItem()">SAVE ITEM</button>
+        </div>
+
+        <div class="card">
+            <h2 style="color: #FFD700; font-size: 1.1rem; margin-bottom: 15px;">📦 Item List</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Rate</th>
+                            <th>GST</th>
+                            <th>Action</th> </tr>
+                    </thead>
+                    <tbody id="itemList">
+                        <tr>
+                            <td>Sample Item</td>
+                            <td>100</td>
+                            <td>18%</td>
+                            <td>
+                                <button onclick="editItem(this)" style="width:auto; padding:5px 10px; background:#2980b9; margin-right:5px;">✏️</button>
+                                <button onclick="deleteItem(this)" style="width:auto; padding:5px 10px; background:#c0392b;">🗑️</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

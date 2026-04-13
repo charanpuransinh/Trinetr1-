@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Trinetra Billing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+
+    <div class="tiranga-strip"></div>
+    
+    <header class="bill-header">
+        <div class="company-info">
+            <input type="text" placeholder="YOUR COMPANY NAME" class="gold-input header-title">
+            <input type="text" placeholder="Address & Contact Details" class="gold-input-sm">
+        </div>
+        <div class="invoice-meta">
+            <input type="text" placeholder="Inv No" class="gold-input-sm">
+            <input type="date" class="gold-input-sm">
+        </div>
+    </header>
+
+    <section class="party-section">
+        <div class="bill-to">
+            <label class="gold-text">BILL TO:</label>
+            <input type="text" id="party-name" placeholder="Party Name" class="gold-input" onblur="checkParty()">
+            <input type="number" id="party-mobile" placeholder="Mobile No" class="gold-input">
+            <button onclick="savePartyData()" class="save-mini-btn">Save Party</button>
+        </div>
+    </section>
+
+    <section class="item-table-container">
+        <table class="billing-table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>HSN</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="item-list">
+                <tr>
+                    <td><input type="text" placeholder="Item Name"></td>
+                    <td><input type="text" placeholder="HSN"></td>
+                    <td><input type="number" class="qty" placeholder="0"></td>
+                    <td><input type="number" class="rate" placeholder="0"></td>
+                    <td class="gold-text row-total">0.00</td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="add-btn" onclick="addRow()">+ Add New Item</button>
+    </section>
+
+    <footer class="bill-footer">
+        <div class="tax-details">
+            <p>SGST (9%): <span id="sgst" class="gold-text">0.00</span></p>
+            <p>CGST (9%): <span id="cgst" class="gold-text">0.00</span></p>
+            <h3 class="gold-text">Grand Total: ₹ <span id="grand-total">0.00</span></h3>
+        </div>
+        <div class="action-buttons">
+            <button class="save-btn">SAVE BILL</button>
+            <button class="print-btn" onclick="window.print()">PRINT</button>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

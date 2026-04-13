@@ -1,58 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Parties - Trinetra System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trinetra - Party Management</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="dark-theme">
+<body data-page="parties">
+    <div class="tiranga-header"></div>
 
-    <div class="tiranga-strip"></div>
-
-    <nav class="top-nav">
-        <a href="home.html">Home</a>
-        <a href="billing.html">Billing</a>
-        <a href="parties.html" class="active">Parties</a>
-        <a href="stock.html">Stock</a>
-        <a href="accounts.html">Accounts</a>
+    <nav>
+        <a href="index.html">🏠 Home</a>
+        <a href="parties.html" style="border: 1px solid #FFD700; background: rgba(255, 215, 0, 0.2);">👥 Parties</a>
+        <a href="items.html">📦 Items</a>
+        <a href="accounts.html">💰 Accounts</a>
+        <a href="billing.html">📄 Invoice</a>
     </nav>
 
     <div class="container">
-        <div class="card gold-border">
-            <h2 class="gold-text">Add New Party</h2>
-            <div class="form-grid">
-                <input type="text" id="partyName" placeholder="Party Name" class="gold-input">
-                <input type="text" id="partyGST" placeholder="GST Number" class="gold-input">
-                <input type="text" id="partyState" placeholder="State Code" class="gold-input">
-                <select id="partyType" class="gold-input">
-                    <option value="customer">Customer</option>
-                    <option value="supplier">Supplier</option>
-                </select>
-                <button onclick="addParty()" class="gold-btn">Save Party</button>
+        <header style="text-align: center; margin: 20px 0;">
+            <h1 style="color: #FFD700; letter-spacing: 1px;">PARTY MANAGEMENT</h1>
+        </header>
+
+        <div class="card">
+            <h2 style="color: #FFD700; font-size: 1.1rem; margin-bottom: 15px;">➕ Add New Party</h2>
+            <input type="text" id="partyName" placeholder="Party Name (नाम)">
+            <input type="text" id="partyGST" placeholder="GST Number (Optional)">
+            <input type="number" id="openingBalance" placeholder="Opening Balance (₹)">
+            <button onclick="addParty()">SAVE PARTY</button>
+        </div>
+
+        <div class="card">
+            <h2 style="color: #FFD700; font-size: 1.1rem; margin-bottom: 15px;">👥 Registered Parties</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Party Name</th>
+                            <th>GST No.</th>
+                            <th>Balance</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="partyList">
+                        <tr>
+                            <td colspan="4" style="text-align:center; color:#555; padding: 20px;">No parties found</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
-
-        <div class="card gold-border">
-            <h2 class="gold-text">Party List & Balance</h2>
-            <div id="partyList" class="scrollable-list">
-                </div>
-        </div>
-    </div>
-
-    <div id="paymentModal" class="modal">
-        <div class="modal-content dark-card gold-border">
-            <span class="close gold-text" onclick="closePaymentModal()">&times;</span>
-            <h3 class="gold-text">Payment Entry</h3>
-            <p>Party: <strong id="modalPartyName"></strong></p>
-            <input type="hidden" id="modalPartyId">
-            <input type="number" id="paymentAmount" placeholder="Amount" class="gold-input">
-            <select id="paymentType" class="gold-input">
-                <option value="receive">Received (In)</option>
-                <option value="give">Given (Out)</option>
-            </select>
-            <input type="text" id="paymentNote" placeholder="Note (optional)" class="gold-input">
-            <button onclick="submitPayment()" class="gold-btn">Save Entry</button>
         </div>
     </div>
 
